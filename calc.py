@@ -13,9 +13,7 @@ def read(f_obj):
         magn_dec = line["magn_dec"]
 
         dict_BL[i] = {"B": line["B"], "L": line["L"], "H": line["H"], "year": line["year"], "magn_dec": line["magn_dec"]}
-
-        print(dict_BL)
-        # return B, L
+        # print(dict_BL)
 
 def convert(value):
     pos_angl = value.find("ᵒ")
@@ -49,6 +47,13 @@ def bussol(magn_dec, gamma):
     corr_bussol = float(magn_dec) - gamma
     return corr_bussol
 
+def my_print():
+    print("B:", i[1]["B"], "L:", i[1]["L"])
+    print("Магнитное склонение:", i[1]["magn_dec"])
+    print("Сближение меридианов:", g)
+    print("Поправка для буссоли", buss)
+    print("\n")
+
 if __name__ == "__main__":
     with open("data.csv") as f_obj:
         read(f_obj)
@@ -59,9 +64,6 @@ if __name__ == "__main__":
         zone_r = zone(L_r)
         g = gamma(B_r, L_r, zero_l(zone_r))
         buss = bussol(i[1]["magn_dec"], g)
-        print("B:", i[1]["B"], "L:", i[1]["L"])
-        print("Магнитное склонение:", i[1]["magn_dec"])
-        print("Сближение меридианов:", g)
-        print("Поправка для буссоли", buss)
-        print("\n")
+        my_print()
+
 
