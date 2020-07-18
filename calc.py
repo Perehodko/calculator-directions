@@ -1,9 +1,7 @@
 import csv
 import math
 
-list_bl = []
 dict_BL = {}
-count = 0
 
 def read(f_obj):
     reader = csv.DictReader(f_obj, delimiter=',')
