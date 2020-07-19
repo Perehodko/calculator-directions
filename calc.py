@@ -50,6 +50,7 @@ def my_print():
     print("Магнитное склонение:", i[1]["magn_dec"])
     print("Сближение меридианов:", g)
     print("Поправка для буссоли", buss)
+    print("zone",zone_r)
     print("\n")
 
 if __name__ == "__main__":
