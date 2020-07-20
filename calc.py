@@ -64,5 +64,3 @@ if __name__ == "__main__":
         g = gamma(B_r, L_r, zero_l(zone_r))
         buss = bussol(i[1]["magn_dec"], g)
         my_print()
-
-
