@@ -10,7 +10,7 @@ def read(f_obj):
         L = line["L"]
         magn_dec = line["magn_dec"]
 
-        dict_BL[i] = {"B": line["B"], "L": line["L"], "H": line["H"], "year": line["year"], "magn_dec": line["magn_dec"]}
+        dict_BL[i] = {"B": line["B"], "L": line["L"], "H": line["H"], "year": line["year"], "magn_dec": line["magn_dec"], "hight": ["H"]}
         # print(dict_BL)
 
 def convert(value):
@@ -35,11 +35,13 @@ def zero_l(zone_r):
 def gamma(B, L, L0):
     radians_B = math.radians(B)
     res_gamma = (L - L0)*math.sin(radians_B)
-    if res_gamma > 0:
-        res_gamma += 0.01
-    else:
-        res_gamma -= 0.01
-    return (round(res_gamma, 2))
+    # if res_gamma > 0:
+    #     res_gamma += 0.01
+    # else:
+    #     res_gamma -= 0.01
+    # return (round(res_gamma, 2))
+    return res_gamma
+
 
 def bussol(magn_dec, gamma):
     corr_bussol = float(magn_dec) - gamma
@@ -47,6 +49,8 @@ def bussol(magn_dec, gamma):
 
 def my_print():
     print("B:", i[1]["B"], "L:", i[1]["L"])
+    print("H:", i[1]["H"], "м")
+    print("Год:", i[1]["year"])
     print("Магнитное склонение:", i[1]["magn_dec"])
     print("Сближение меридианов:", g)
     print("Поправка для буссоли", buss)
