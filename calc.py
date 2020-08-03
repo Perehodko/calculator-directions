@@ -1,5 +1,6 @@
 import csv
 import math
+from pyproj import Transformer
 
 dict_BL = {}
 
@@ -9,8 +10,9 @@ def read(f_obj):
         B = line["B"]
         L = line["L"]
         magn_dec = line["magn_dec"]
+        zone = line["zone"]
 
-        dict_BL[i] = {"B": line["B"], "L": line["L"], "H": line["H"], "year": line["year"], "magn_dec": line["magn_dec"], "hight": ["H"]}
+        dict_BL[i] = {"B": line["B"], "L": line["L"], "zone": line["zone"], "H": line["H"], "year": line["year"], "magn_dec": line["magn_dec"], "hight": ["H"]}
         # print(dict_BL)
 
 def convert(value):
@@ -47,13 +49,26 @@ def bussol(magn_dec, gamma):
     corr_bussol = float(magn_dec) - gamma
     return corr_bussol
 
+def convert_coord(line_z, B, L):
+    zone_dict = {"39": "epsg:32639", "31": "epsg:32631", "51": "epsg:32651", "52": "epsg:32652", "42": "epsg:32642",
+                 "53": "epsg:32653"}
+    if line_z in zone_dict:
+        # print(zone_dict[line_z])
+        epsg = zone_dict[line_z]
+
+    transformer = Transformer.from_crs("epsg:4326", epsg)
+    b = transformer.transform(B, L)
+    return b
+    # print(b)
+
 def my_print():
     print("B:", i[1]["B"], "L:", i[1]["L"])
+    print("X:", round(res_flat_coord[0]), "Y:", round(res_flat_coord[1]))
     print("H:", i[1]["H"], "м")
     print("Год:", i[1]["year"])
     print("Магнитное склонение:", i[1]["magn_dec"])
-    print("Сближение меридианов:", g)
-    print("Поправка для буссоли", buss)
+    print("Сближение меридианов:", round(g, 3))
+    print("Поправка для буссоли", round(buss, 3))
     # print("zone",zone_r)
     print("\n")
 
@@ -67,4 +82,5 @@ if __name__ == "__main__":
         zone_r = zone(L_r)
         g = gamma(B_r, L_r, zero_l(zone_r))
         buss = bussol(i[1]["magn_dec"], g)
+        res_flat_coord = convert_coord(i[1]["zone"], B_r, L_r)
         my_print()
