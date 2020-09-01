@@ -12,8 +12,8 @@ def read(f_obj):
         magn_dec = line["magn_dec"]
         zone = line["zone"]
 
-        dict_BL[i] = {"B": line["B"], "L": line["L"], "zone": line["zone"], "H": line["H"], "year": line["year"], "magn_dec": line["magn_dec"], "hight": ["H"]}
-        # print(dict_BL)
+        dict_BL[i] = {"B": line["B"], "L": line["L"], "zone": line["zone"], "H": line["H"], "year": line["year"], "magn_dec": line["magn_dec"]}
+    print(dict_BL)
 
 def convert(value):
     pos_angl = value.find("ᵒ")
@@ -54,6 +54,7 @@ def convert_coord(line_z, B, L):
                  "53": "epsg:32653"}
     if line_z in zone_dict:
         # print(zone_dict[line_z])
+        global epsg
         epsg = zone_dict[line_z]
 
     transformer = Transformer.from_crs("epsg:4326", epsg)
@@ -61,9 +62,11 @@ def convert_coord(line_z, B, L):
     return b
     # print(b)
 
+
+
 def my_print():
     print("B:", i[1]["B"], "L:", i[1]["L"])
-    print("X:", round(res_flat_coord[0]), "Y:", round(res_flat_coord[1]))
+    print("X:", round(res_flat_coord[0]), "Y:", round(res_flat_coord[1]), "зона - ",epsg)
     print("H:", i[1]["H"], "м")
     print("Год:", i[1]["year"])
     print("Магнитное склонение:", i[1]["magn_dec"])
