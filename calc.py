@@ -15,7 +15,7 @@ def read(f_obj):
         zone = line["zone"]
 
         dict_BL[i] = {"B": line["B"], "L": line["L"], "zone": line["zone"], "H": line["H"], "year": line["year"], "magn_dec": line["magn_dec"]}
-    print(dict_BL)
+    # print(dict_BL)
 
 
 # convert str to degree
