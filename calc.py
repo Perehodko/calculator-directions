@@ -4,6 +4,8 @@ from pyproj import Transformer
 
 dict_BL = {}
 
+
+# read data from csv file
 def read(f_obj):
     reader = csv.DictReader(f_obj, delimiter=',')
     for i, line in enumerate(reader):
@@ -15,25 +17,32 @@ def read(f_obj):
         dict_BL[i] = {"B": line["B"], "L": line["L"], "zone": line["zone"], "H": line["H"], "year": line["year"], "magn_dec": line["magn_dec"]}
     print(dict_BL)
 
+
+# convert str to degree
 def convert(value):
-    pos_angl = value.find("ᵒ")
-    angler = value[:pos_angl]
-    # pos minute
+    pos_angler = value.find("ᵒ")
+    angler = value[:pos_angler]
+    # find position of minute
     pos_minute = value.find("'")
-    minute = value[pos_angl + 1:pos_minute]
-    # only degree
+    minute = value[pos_angler + 1:pos_minute]
+    # convert data to degree
     degree = float(angler) + float(minute) / 60
     # print("degree", degree)
-    return (degree)
+    return degree
 
-def zone(L_r):
+
+# calculate the number of zone
+def number_of_zone(L_r):
     zone_r = int((L_r / 6) + 1)
     return zone_r
 
+# calculate axial meridian zone
 def zero_l(zone_r):
     L0 = 6 * zone_r - 3
     return L0
 
+
+# calculate meridian
 def gamma(B, L, L0):
     radians_B = math.radians(B)
     res_gamma = (L - L0)*math.sin(radians_B)
@@ -45,10 +54,13 @@ def gamma(B, L, L0):
     return res_gamma
 
 
+# calculate amedment of bussol
 def bussol(magn_dec, gamma):
     corr_bussol = float(magn_dec) - gamma
     return corr_bussol
 
+
+# convert coordinate to epsg code
 def convert_coord(line_z, B, L):
     zone_dict = {"39": "epsg:32639", "31": "epsg:32631", "51": "epsg:32651", "52": "epsg:32652", "42": "epsg:32642",
                  "53": "epsg:32653"}
@@ -60,10 +72,9 @@ def convert_coord(line_z, B, L):
     transformer = Transformer.from_crs("epsg:4326", epsg)
     b = transformer.transform(B, L)
     return b
-    # print(b)
 
 
-
+# print beautiful result
 def my_print():
     print("B:", i[1]["B"], "L:", i[1]["L"])
     print("X:", round(res_flat_coord[0]), "Y:", round(res_flat_coord[1]), "зона - ",epsg)
@@ -75,6 +86,7 @@ def my_print():
     # print("zone",zone_r)
     print("\n")
 
+
 if __name__ == "__main__":
     with open("data.csv") as f_obj:
         read(f_obj)
@@ -82,7 +94,7 @@ if __name__ == "__main__":
         # print(i[1]["B"])
         B_r = convert(i[1]["B"])
         L_r = convert(i[1]["L"])
-        zone_r = zone(L_r)
+        zone_r = number_of_zone(L_r)
         g = gamma(B_r, L_r, zero_l(zone_r))
         buss = bussol(i[1]["magn_dec"], g)
         res_flat_coord = convert_coord(i[1]["zone"], B_r, L_r)
