@@ -14,6 +14,10 @@ def read(f_obj):
         dict_BL[i] = {"magn_azimut": line["magn_azimut"], "true_azimuth": line["true_azimuth"], "directions_angle": line["directions_angle"]}
     print(dict_BL)
 
+def my_print():
+    print("Магнитный азимут:", i[1]["magn_azimut"], ",", "Истинный азимут:", i[1]["true_azimuth"], ",", "Дирекционный угол:", i[1]["directions_angle"])
+
+
 def correction_directions():
     # CD =
     pass
@@ -21,3 +25,5 @@ def correction_directions():
 if __name__ == "__main__":
     with open("data.csv") as f_obj:
         read(f_obj)
+        for i in dict_BL.items():
+            my_print()
