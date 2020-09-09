@@ -1,6 +1,7 @@
 import csv
 import math
 from pyproj import Transformer
+import pandas as ps
 
 dict_BL = {}
 
@@ -74,6 +75,12 @@ def convert_coord(line_z, B, L):
     return b
 
 
+def writer_to_csv(list_gamma):
+    df = ps.read_csv("data.csv", sep=",", engine="python")
+    df['gamma_result'] = list_gamma
+    df.to_csv("data.csv", index=False)
+
+
 # print beautiful result
 def my_print():
     print("B:", i[1]["B"], "L:", i[1]["L"])
@@ -86,7 +93,7 @@ def my_print():
     # print("zone",zone_r)
     print("\n")
 
-
+list_gamma = []
 if __name__ == "__main__":
     with open("data.csv") as f_obj:
         read(f_obj)
@@ -96,6 +103,9 @@ if __name__ == "__main__":
         L_r = convert(i[1]["L"])
         zone_r = number_of_zone(L_r)
         g = gamma(B_r, L_r, zero_l(zone_r))
+        list_gamma.append(round(g, 3))
         buss = bussol(i[1]["magn_dec"], g)
         res_flat_coord = convert_coord(i[1]["zone"], B_r, L_r)
         my_print()
+    writer_to_csv(list_gamma)
+    print(list_gamma)
