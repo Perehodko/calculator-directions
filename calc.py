@@ -75,6 +75,7 @@ def convert_coord(line_z, B, L):
     return b
 
 
+# write result of calculate to csv file
 def writer_to_csv(list_gamma):
     df = ps.read_csv("data.csv", sep=",", engine="python")
     df['gamma_result'] = list_gamma
