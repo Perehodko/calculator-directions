@@ -15,7 +15,6 @@
 ```
 python3 calc.py > result.txt
 python3 calc_directions.py > result2.txt
-
 ```
 Вывод результатов будет в следующем формате:
 ```
