@@ -15,7 +15,8 @@ def read(f_obj):
         magn_dec = line["magn_dec"]
         zone = line["zone"]
 
-        dict_BL[i] = {"B": line["B"], "L": line["L"], "zone": line["zone"], "H": line["H"], "year": line["year"], "magn_dec": line["magn_dec"]}
+        dict_BL[i] = {"B": line["B"], "L": line["L"], "zone": line["zone"], "H": line["H"], "year": line["year"],
+                      "magn_dec": line["magn_dec"]}
     # print(dict_BL)
 
 
@@ -37,6 +38,7 @@ def number_of_zone(L_r):
     zone_r = int((L_r / 6) + 1)
     return zone_r
 
+
 # calculate axial meridian zone
 def zero_l(zone_r):
     L0 = 6 * zone_r - 3
@@ -46,7 +48,7 @@ def zero_l(zone_r):
 # calculate meridian
 def gamma(B, L, L0):
     radians_B = math.radians(B)
-    res_gamma = (L - L0)*math.sin(radians_B)
+    res_gamma = (L - L0) * math.sin(radians_B)
     # if res_gamma > 0:
     #     res_gamma += 0.01
     # else:
@@ -85,7 +87,7 @@ def writer_to_csv(list_gamma):
 # print beautiful result
 def my_print():
     print("B:", i[1]["B"], "L:", i[1]["L"])
-    print("X:", round(res_flat_coord[0]), "Y:", round(res_flat_coord[1]), "зона - ",epsg)
+    print("X:", round(res_flat_coord[0]), "Y:", round(res_flat_coord[1]), "зона - ", epsg)
     print("H:", i[1]["H"], "м")
     print("Год:", i[1]["year"])
     print("Магнитное склонение:", i[1]["magn_dec"])
@@ -93,6 +95,7 @@ def my_print():
     print("Поправка для буссоли", round(buss, 3))
     # print("zone",zone_r)
     print("\n")
+
 
 list_gamma = []
 if __name__ == "__main__":
