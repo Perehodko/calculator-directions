@@ -1,6 +1,4 @@
 import csv
-import math
-import calc
 
 dict_BL = {}
 
@@ -11,8 +9,9 @@ def read(f_obj):
         true_azimuth = line["true_azimuth"]
         directions_angle = line["directions_angle"]
         magn_dec = line["magn_dec"]
+        gamma_result = line["gamma_result"]
 
-        dict_BL[i] = {"magn_dec" : line["magn_dec"], "magn_azimut": line["magn_azimut"], "true_azimuth": line["true_azimuth"], "directions_angle": line["directions_angle"]}
+        dict_BL[i] = {"magn_dec" : line["magn_dec"], "magn_azimut": line["magn_azimut"], "true_azimuth": line["true_azimuth"], "directions_angle": line["directions_angle"], "gamma_result": line["gamma_result"]}
     print(dict_BL)
 
 def my_print():
@@ -22,11 +21,20 @@ def my_print():
 def calculate_parameters():
     if i[1]["magn_azimut"] != "-":
         true_azimuth = float(i[1]["magn_azimut"]) +  float(i[1]["magn_dec"])
-        correction_of_direction = float(i[1]["magn_dec"]) - ()
+        correction_of_direction = float(i[1]["magn_dec"]) - float(i[1]["gamma_result"])
+        direction_angle = float(i[1]["magn_azimut"])  + correction_of_direction
         print("Магнитный азимут равен: {0}°".format(i[1]["magn_azimut"]))
         print("Истинный азимут:", true_azimuth)
+        print("Дирекционный угол:", round(direction_angle, 3))
+        print("===============================")
     elif i[1]["true_azimuth"] != "-":
-        print("Истинный азимут не равен 0")
+        magn_azim = float(i[1]["true_azimuth"]) - float(i[1]["magn_dec"])
+        correction_of_direction = float(i[1]["magn_dec"]) - float(i[1]["gamma_result"])
+        dir_angle = magn_azim + correction_of_direction
+        print("Истинный азимут равен: {0}".format(i[1]["true_azimuth"]))
+        print("Магнитный азимут равен:{0}".format(magn_azim))
+        print("Дирекционный угол равен равен:{0}".format(dir_angle))
+        print("+++++++++++++++++++++++++++++++")
     elif i[1]["directions_angle"] != "-":
         print("Дирекционный угол не равен 0")
 
