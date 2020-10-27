@@ -19,7 +19,7 @@ def read(file_name):
                               "magn_dec": line["magn_dec"]}
         return dict_BL
     except Exception as e:
-        print("Перепроверьте csv файл", e)
+        print("Recheck of csv file:", e, type(e))
 
 
 # convert str to degree
@@ -80,10 +80,13 @@ def convert_coord(line_z, B, L):
 
 
 # write result of calculate to csv file
-def writer_to_csv(list_gamma):
-    df = ps.read_csv("data.csv", sep=",", engine="python")
-    df['gamma_result'] = list_gamma
-    df.to_csv("data.csv", index=False)
+def writer_to_csv(list_gamma, filename):
+    try:
+        df = ps.read_csv(filename, sep=",", engine="python")
+        df['gamma_result'] = list_gamma
+        df.to_csv("data.csv", index=False)
+    except Exception as e:
+        print("Problem with csv file:", e, type(e))
 
 
 # print beautiful result
@@ -126,5 +129,5 @@ if __name__ == "__main__":
         buss = bussol(i[1]["magn_dec"], g)
         res_flat_coord = convert_coord(i[1]["zone"], B_r, L_r)
         my_print()
-    writer_to_csv(list_gamma)
+    writer_to_csv(list_gamma, filename)
     # print(list_gamma)
