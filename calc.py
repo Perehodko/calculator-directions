@@ -2,6 +2,8 @@ import csv
 import math
 from pyproj import Transformer
 import pandas as ps
+import argparse
+import os
 
 dict_BL = {}
 
@@ -97,9 +99,27 @@ def my_print():
     print("\n")
 
 
+# check exists file
+def validate_file(f):
+    if not os.path.exists(f):
+        # Argparse uses the ArgumentTypeError to give a rejection message like:
+        # error: argument input: x does not exist
+        raise argparse.ArgumentTypeError("{0} does not exist".format(f))
+    return f
+
+
+# function of parsing arguments
+def pars_arguments():
+    parser = argparse.ArgumentParser(description="Read file name form Command line.")
+    parser.add_argument("-f", "--file_name", dest="filename", required=True, type=validate_file,
+                        help="input file", metavar="FULL_PATH_TO_FILE")
+    args = parser.parse_args()
+    return args.filename
+
+
 list_gamma = []
 if __name__ == "__main__":
-    with open("data.csv") as f_obj:
+    with open(pars_arguments()) as f_obj:
         read(f_obj)
     for i in dict_BL.items():
         # print(i[1]["B"])
@@ -112,4 +132,4 @@ if __name__ == "__main__":
         res_flat_coord = convert_coord(i[1]["zone"], B_r, L_r)
         my_print()
     writer_to_csv(list_gamma)
-    print(list_gamma)
+    # print(list_gamma)
