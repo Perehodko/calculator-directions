@@ -9,17 +9,17 @@ dict_BL = {}
 
 
 # read data from csv file
-def read(f_obj):
-    reader = csv.DictReader(f_obj, delimiter=',')
-    for i, line in enumerate(reader):
-        B = line["B"]
-        L = line["L"]
-        magn_dec = line["magn_dec"]
-        zone = line["zone"]
-
-        dict_BL[i] = {"B": line["B"], "L": line["L"], "zone": line["zone"], "H": line["H"], "year": line["year"],
-                      "magn_dec": line["magn_dec"]}
-    # print(dict_BL)
+def read(file_name):
+    try:
+        with open(file_name) as f_obj:
+            reader = csv.DictReader(f_obj, delimiter=',')
+            for i, line in enumerate(reader):
+                dict_BL[i] = {"B": line["B"], "L": line["L"], "zone": line["zone"], "H": line["H"],
+                              "year": line["year"],
+                              "magn_dec": line["magn_dec"]}
+        return dict_BL
+    except Exception as e:
+        print("Перепроверьте csv файл", e)
 
 
 # convert str to degree
@@ -108,19 +108,14 @@ def validate_file(f):
     return f
 
 
-# function of parsing arguments
-def pars_arguments():
+list_gamma = []
+if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Read file name form Command line.")
     parser.add_argument("-f", "--file_name", dest="filename", required=True, type=validate_file,
                         help="input file", metavar="FULL_PATH_TO_FILE")
     args = parser.parse_args()
-    return args.filename
-
-
-list_gamma = []
-if __name__ == "__main__":
-    with open(pars_arguments()) as f_obj:
-        read(f_obj)
+    filename = args.filename
+    read(filename)
     for i in dict_BL.items():
         # print(i[1]["B"])
         B_r = convert(i[1]["B"])
