@@ -14,29 +14,18 @@
 **Для запуска скрипта используйте команду:**
 ```
 python3 calc.py -f PATH_TO_CSV_FILE
+python3 calc_directions.py -f PATH_TO_CSV_FILE
 ```
 **Help:**
 ```
 python3 calc.py -h
-```
-
-Результат:
-```
-usage: calc.py [-h] -f FULL_PATH_TO_FILE
-
-Read file name form Command line.
-
-optional arguments:
-  -h, --help            show this help message and exit
-  -f FULL_PATH_TO_FILE, --file_name FULL_PATH_TO_FILE
-                        input file
-
+python3 calc_directions.py -h
 ```
 
 **Для того, чтобы получить результаты расчетов в отдельный файл, перенаправьте вывод:**
 ```
 python3 calc.py -f data.csv > result.txt
-python3 calc_directions.py > result2.txt
+python3 calc_directions.py -f data.csv > result2.txt
 ```
 Вывод результатов будет в следующем формате:
 ```
